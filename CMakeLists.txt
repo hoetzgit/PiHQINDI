@@ -1,4 +1,4 @@
-########### Tutorial three ##############
+########### PiHQCCD ##############
 if (CFITSIO_FOUND)
 add_executable(pihqccd pihqccd.cpp)
 
