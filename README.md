@@ -1,5 +1,5 @@
 # PiHQINDI
-##INDI driver for the Raspberry Pi HQ Camera
+## INDI driver for the Raspberry Pi HQ Camera
 
 This INDI driver is based on the ASCOM driver written by Rob Musquetier available at: https://www.musquetier.nl/downloads/RPiCameraV3_Setup.exe. Many thanks for use of his PHP driver and much of the text below. Hopefully this project can assist in refining the script!
 
@@ -7,7 +7,7 @@ This driver will enable you to use the, in Q2 2020 released version 3 Raspberry 
 
 This driver is part of a project to build an INDI based Plate Solver (similar to the Celestron StarSense) that will provide platesolve based alignment and position refinement services to telescopes using INDI.
 
-**INSTALLATION INSTRUCTIONS**
+## INSTALLATION INSTRUCTIONS 
 
 Step 1) Order and initial setup your Raspberry Pi:
 
@@ -150,7 +150,7 @@ Experiment with the available settings. Background information on the workings o
 
 The script is using the reapistill command to capture images and the php script makes the most useful parameters available via the RESTful API of the php script.
 
-##Available parameters:
+## Available parameters:
 
 Parameter	| Default Value	| Options
 --------- | ------------- | -------
