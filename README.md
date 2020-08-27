@@ -148,7 +148,7 @@ Step 9) Play and learn:
 
 Experiment with the available settings. Background information on the workings of these settings can be read at the following page: https://www.raspberrypi.org/documentation/raspbian/applications/camera.md 
 
-The script is using the reapistill command to capture images and the php script makes the most useful parameters available via the RESTful API of the php script.
+The script is using the raspistill command to capture images and the php script makes the most useful parameters available via the RESTful API of the php script.
 
 ## Available parameters:
 
