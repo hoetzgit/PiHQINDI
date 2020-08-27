@@ -1,25 +1,8 @@
-/*
-   INDI Developers Manual
-   Tutorial #3
-
-   "Simple CCD Driver"
-
-   We develop a simple CCD driver.
-
-   Refer to README, which contains instruction on how to build this driver, and use it
-   with an INDI-compatible client.
-
-*/
-
-/** \file simpleccd.h
-    \brief Construct a basic INDI CCD device that simulates exposure & temperature settings. It also generates a random pattern and uploads it as a FITS file.
-    \author Jasem Mutlaq
-
-    \example simpleccd.h
-    A simple CCD device that can capture images and control temperature. It returns a FITS image to the client. To build drivers for complex CCDs, please
-    refer to the INDI Generic CCD driver template in INDI SVN (under 3rdparty).
-*/
-
+  /**********************************************************************************************************
+   **   File: pihqccd.h                                                                                  **
+   **   Author: Gord Tulloch (gord.tulloch@gmail.com)                                                      **
+   **   Version 0.0                                                                                        **
+   **********************************************************************************************************/
 #pragma once
 
 #include "indiccd.h"
