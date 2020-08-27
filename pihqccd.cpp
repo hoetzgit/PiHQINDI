@@ -4,7 +4,7 @@
    **   Version 0.0                                                                                        **
    **********************************************************************************************************/
 
-#include "simpleccd.h"
+#include "pihqccd.h"
 #include <memory>
 
 /* Macro shortcut to CCD temperature value */
