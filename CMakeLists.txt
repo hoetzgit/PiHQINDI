@@ -1,6 +1,6 @@
 ########### Tutorial three ##############
 if (CFITSIO_FOUND)
-add_executable(tutorial_three pihq.cpp)
+add_executable(pihqccd pihqccd.cpp)
 
-target_link_libraries(indidriver)
+target_link_libraries(pyhqccd indidriver)
 endif (CFITSIO_FOUND)
