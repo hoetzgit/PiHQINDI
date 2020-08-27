@@ -10,26 +10,26 @@
 /* Macro shortcut to CCD temperature value */
 #define currentCCDTemperature TemperatureN[0].value
 
-std::unique_ptr<SimpleCCD> simpleCCD(new SimpleCCD());
+std::unique_ptr<PihqCCD> pihqCCD(new PihqCCD());
 
 void ISGetProperties(const char *dev)
 {
-    simpleCCD->ISGetProperties(dev);
+    pihqCCD->ISGetProperties(dev);
 }
 
 void ISNewSwitch(const char *dev, const char *name, ISState *states, char *names[], int n)
 {
-    simpleCCD->ISNewSwitch(dev, name, states, names, n);
+    pihqCCD->ISNewSwitch(dev, name, states, names, n);
 }
 
 void ISNewText(const char *dev, const char *name, char *texts[], char *names[], int n)
 {
-    simpleCCD->ISNewText(dev, name, texts, names, n);
+    pihqCCD->ISNewText(dev, name, texts, names, n);
 }
 
 void ISNewNumber(const char *dev, const char *name, double values[], char *names[], int n)
 {
-    simpleCCD->ISNewNumber(dev, name, values, names, n);
+    pihqCCD->ISNewNumber(dev, name, values, names, n);
 }
 
 void ISNewBLOB(const char *dev, const char *name, int sizes[], int blobsizes[], char *blobs[], char *formats[],
@@ -47,15 +47,15 @@ void ISNewBLOB(const char *dev, const char *name, int sizes[], int blobsizes[], 
 
 void ISSnoopDevice(XMLEle *root)
 {
-    simpleCCD->ISSnoopDevice(root);
+    pihqCCD->ISSnoopDevice(root);
 }
 
 /**************************************************************************************
 ** Client is asking us to establish connection to the device
 ***************************************************************************************/
-bool SimpleCCD::Connect()
+bool PihqCCD::Connect()
 {
-    IDMessage(getDeviceName(), "Simple CCD connected successfully!");
+    IDMessage(getDeviceName(), "Pi HQ CCD connected successfully!");
 
     // Let's set a timer that checks teleCCDs status every POLLMS milliseconds.
     SetTimer(POLLMS);
@@ -65,24 +65,24 @@ bool SimpleCCD::Connect()
 /**************************************************************************************
 ** Client is asking us to terminate connection to the device
 ***************************************************************************************/
-bool SimpleCCD::Disconnect()
+bool PihqCCD::Disconnect()
 {
-    IDMessage(getDeviceName(), "Simple CCD disconnected successfully!");
+    IDMessage(getDeviceName(), "Pi HQ CCD disconnected successfully!");
     return true;
 }
 
 /**************************************************************************************
 ** INDI is asking us for our default device name
 ***************************************************************************************/
-const char *SimpleCCD::getDefaultName()
+const char *PihqCCD::getDefaultName()
 {
-    return "Simple CCD";
+    return "Pi HQ CCD";
 }
 
 /**************************************************************************************
 ** INDI is asking us to init our properties.
 ***************************************************************************************/
-bool SimpleCCD::initProperties()
+bool PihqCCD::initProperties()
 {
     // Must init parent properties first!
     INDI::CCD::initProperties();
@@ -103,7 +103,7 @@ bool SimpleCCD::initProperties()
 ** INDI is asking us to update the properties because there is a change in CONNECTION status
 ** This fucntion is called whenever the device is connected or disconnected.
 *********************************************************************************************/
-bool SimpleCCD::updateProperties()
+bool PihqCCD::updateProperties()
 {
     // Call parent update properties first
     INDI::CCD::updateProperties();
@@ -123,10 +123,10 @@ bool SimpleCCD::updateProperties()
 /**************************************************************************************
 ** Setting up CCD parameters
 ***************************************************************************************/
-void SimpleCCD::setupParams()
+void PihqCCD::setupParams()
 {
-    // Our CCD is an 8 bit CCD, 1280x1024 resolution, with 5.4um square pixels.
-    SetCCDParams(1280, 1024, 8, 5.4, 5.4);
+    // Our CCD is an 8 bit CCD, 4056x3040 resolution, with 1.55um square pixels.
+    SetCCDParams(4056, 3040, 8, 1.55, 1.55);
 
     // Let's calculate how much memory we need for the primary CCD buffer
     int nbuf;
@@ -138,7 +138,7 @@ void SimpleCCD::setupParams()
 /**************************************************************************************
 ** Client is asking us to start an exposure
 ***************************************************************************************/
-bool SimpleCCD::StartExposure(float duration)
+bool PihqCCD::StartExposure(float duration)
 {
     ExposureRequest = duration;
 
@@ -156,7 +156,7 @@ bool SimpleCCD::StartExposure(float duration)
 /**************************************************************************************
 ** Client is asking us to abort an exposure
 ***************************************************************************************/
-bool SimpleCCD::AbortExposure()
+bool PihqCCD::AbortExposure()
 {
     InExposure = false;
     return true;
@@ -165,18 +165,18 @@ bool SimpleCCD::AbortExposure()
 /**************************************************************************************
 ** Client is asking us to set a new temperature
 ***************************************************************************************/
-int SimpleCCD::SetTemperature(double temperature)
+int PihqCCD::SetTemperature(double temperature)
 {
     TemperatureRequest = temperature;
 
     // 0 means it will take a while to change the temperature
-    return 0;
+    return 0; 
 }
 
 /**************************************************************************************
 ** How much longer until exposure is done?
 ***************************************************************************************/
-float SimpleCCD::CalcTimeLeft()
+float PihqCCD::CalcTimeLeft()
 {
     double timesince;
     double timeleft;
@@ -194,7 +194,7 @@ float SimpleCCD::CalcTimeLeft()
 /**************************************************************************************
 ** Main device loop. We check for exposure and temperature progress here
 ***************************************************************************************/
-void SimpleCCD::TimerHit()
+void PihqCCD::TimerHit()
 {
     long timeleft;
 
@@ -206,7 +206,7 @@ void SimpleCCD::TimerHit()
         timeleft = CalcTimeLeft();
 
         // Less than a 0.1 second away from exposure completion
-        // This is an over simplified timing method, check CCDSimulator and simpleCCD for better timing checks
+        // This is an over simplified timing method, check CCDSimulator and pihqCCD for better timing checks
         if (timeleft < 0.1)
         {
             /* We're done exposing */
@@ -263,7 +263,7 @@ void SimpleCCD::TimerHit()
 /**************************************************************************************
 ** Create a random image and return it to client
 ***************************************************************************************/
-void SimpleCCD::grabImage()
+void PihqCCD::grabImage()
 {
     // Let's get a pointer to the frame buffer
     uint8_t *image = PrimaryCCD.getFrameBuffer();
