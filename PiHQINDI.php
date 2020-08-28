@@ -4,9 +4,9 @@
    **   Author: Rob Musquetier (rob.musquetier@itcap.nl) for Raspberry Pi version 3 Camera ASCOM driver    **
    **   Forked by: Gord Tulloch (gord.tulloch@gmail.com)                                                   **
    **   Thanks to Rob for allowing use of his code in this project                                         **
-	 **********************************************************************************************************/
-  $type 		= "jpg";	// Default type to create jpg files
-
+   **********************************************************************************************************/
+   
+    $type 		= "jpg";	// Default type to create jpg files
 	$debug 		= false;	// Default debug is switched off
 	$doit  		= true;		// Default doit is switched on
 
@@ -33,7 +33,7 @@
 	$annotate	= isset($_REQUEST['annotate'])		? validate_number(round($_REQUEST['annotate']))														: 0;			// Default 0 (no text)
 	$timeout	= isset($_REQUEST['timeout'])		? validate_number(round($_REQUEST['timeout']))														: 100;			// Default 0.1 sec timeout
 	$verbose    = isset($_REQUEST['verbose'])		? validate_boolean($_REQUEST['verbose'])															: false;		// Default debug info default off
-	$convert    = isset($_REQUEST['convert'])		? validate_boolean($_REQUEST['convert'])															: false;		// Default debug info default off
+	$convert    = isset($_REQUEST['convert'])		? validate_boolean($_REQUEST['convert'])															: false;		// Convert to FITS default off
 
 	// Remove previously created image and log files create longer than 10 minute ago
 	echo exec("find *.bmp -mmin +1 -type f -exec rm {} \;");
@@ -244,7 +244,7 @@
 	if ($verbose)
 		$command .= "--verbose ";
 
-	$command .= "--digitalgain 1 --stats --burst ";
+	$command .= "--digitalgain 1 --stats --burst 2>&1 | tee raspilog.txt\n";
 
 	// Show command on the command interface when debug parameter is true or not 0
 	if ($debug)
@@ -256,7 +256,7 @@
 // 2>&1 | perl -pe 'use POSIX strftime; print strftime "[%Y-%m-%d %H:%M:%S] ", localtime'
 
 	// Write raspistill command string to the log file
-	fwrite($f, "\n".$command."\n\n");
+	fwrite($f, "\n".$command." n\n");
 
 	// Close the log file
 	fclose ($f);
